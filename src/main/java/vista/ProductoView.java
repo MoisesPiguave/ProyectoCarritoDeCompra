@@ -1,49 +1,100 @@
-package vista;
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+    package vista;
 
-public class ProductoView extends JFrame {
+    import modelo.Producto;
 
-    private JPanel panel1;
-    private JTextField textField1;
-    private JTextField textField2;
-    private JTextField textField3;
-    private JButton guardarButton;
-    private JButton salirButton;
-    private JLabel lblnombre;
-    private JLabel lblprecio;
-    private JLabel lblcodigo;
+    import javax.swing.*;
+    import java.awt.event.ActionEvent;
+    import java.awt.event.ActionListener;
+    import java.util.ArrayList;
+    import java.util.List;
 
-    public ProductoView() {
-        setContentPane(panel1);
-        setTitle("Datos deProducto");
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setSize(500, 500);
-        setLocationRelativeTo(null);
-        setVisible(true);
-        guardarButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                mostrarDatos();
+    public class ProductoView extends JFrame {
+
+        private JPanel panel1;
+        private JTextField txtCodigo;
+        private JTextField txtNombre;
+        private JTextField txtPrecio;
+        private JButton btnAceptar;
+        private JButton btnLimpiar;
+        private JButton btnSalir;
+        private JButton btnGuardar;
+        private JLabel lblCodigo;
+        private JLabel lblNombre;
+        private JLabel lblPrecio;
+
+        private final List<Producto> productosGuardados = new ArrayList<>();
+
+        public ProductoView() {
+            setContentPane(panel1);
+            setTitle("Datos del Producto");
+            setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            setSize(500, 500);
+            setLocationRelativeTo(null);
+            setVisible(true);
+
+            btnGuardar.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    int codigo = Integer.parseInt(txtCodigo.getText());
+                    String nombre = txtNombre.getText().trim();
+                    double precio = Double.parseDouble(txtPrecio.getText());
+                    Producto producto = new Producto(codigo, nombre, precio);
+                    productosGuardados.add(producto);
+                    mostrarProductos(productosGuardados);
+                    limpiarCampos();
+                }
+            });
+
+            btnLimpiar.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    limpiarCampos();
+                }
+            });
+
+            btnSalir.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    dispose();
+                }
+            });
+        }
+
+        public JTextField getTxtCodigo() {
+            return txtCodigo;
+        }
+
+        public JTextField getTxtNombre() {
+            return txtNombre;
+        }
+
+        public JTextField getTxtPrecio() {
+            return txtPrecio;
+        }
+
+        public JButton getBtnAceptar() {
+            return btnAceptar;
+        }
+
+        public JButton getBtnLimpiar() {
+            return btnLimpiar;
+        }
+
+
+        public void limpiarCampos() {
+            txtCodigo.setText("");
+            txtNombre.setText("");
+            txtPrecio.setText("");
+        }
+
+        public void mostrarProductos(List<Producto> productos) {
+            System.out.println(" Productos guardados ");
+            for (Producto p : productos) {
+                System.out.println(p);
             }
-        });
-    }
-    private void mostrarDatos() {
-        String nombre = textField1.getText();
-        String precio = textField3.getText();
-        String codigo = textField2.getText();
-        System.out.println("Nombre: " + precio);
-        System.out.println("Precio: " + nombre);
-        System.out.println("Codigo: " + codigo);
+        }
 
-
+        public static void main(String[] args) {
+            new ProductoView();
+        }
     }
-    public static void main(String[] args) {
-        new ProductoView();
-    }
-
-    private void createUIComponents() {
-        // TODO: place custom component creation code here
-    }
-}
